@@ -93,10 +93,23 @@
 	data.calls =[];
 	data.runtime = "https://interface-demo.blackpond-f670c875.eastus.azurecontainerapps.io/api/flex-token";
 	
+	var phone = $sp.getParameter('phone') || '';
+	var caller_sys_id = '';
+
+	if (phone) {
+		var user_gr = new GlideRecord('sys_user');
+		user_gr.addActiveQuery();
+		user_gr.addEncodedQuery("phone=" + phone + "^ORhome_phone=" + phone + "^ORmobile_phone=" + phone);
+		user_gr.query();
+		caller_sys_id = user_gr.next() ? user_gr.getValue('sys_id') : '';
+	}
+
 	var calls_gr = new GlideRecord('incident');
-	calls_gr.addEncodedQuery('active=true^contact_type=twilio_flex^assigned_toDYNAMIC90d1921e5f510100a9ad2572f2b477fe^x_8725_servicenow_twilio_integration_informationNOT LIKEcall_completed^NQactive=true^x_8725_servicenow_twilio_integration_informationLIKEjavascript:gs.getUserID()^x_8725_servicenow_twilio_integration_informationNOT LIKEcall_completed');
-	calls_gr.orderBy('number');
-	calls_gr.query();
+	if (caller_sys_id) {
+		calls_gr.addEncodedQuery('active=true^caller_id=' + caller_sys_id);
+		calls_gr.orderBy('number');
+		calls_gr.query();
+	}
 	
 	while(calls_gr.next())
 		{
