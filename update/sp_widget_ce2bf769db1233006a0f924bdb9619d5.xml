@@ -92,9 +92,18 @@
         <script><![CDATA[(function() {
 	data.calls =[];
 	data.runtime = "https://interface-demo.blackpond-f670c875.eastus.azurecontainerapps.io/api/flex-token";
+
+	// lookup caller by hardcoded phone (for testing)
+	var phone = "+14068405011";
+	var user_gr = new GlideRecord('sys_user');
+	user_gr.addActiveQuery();
+	user_gr.addEncodedQuery("phone=" + phone + "^ORhome_phone=" + phone + "^ORmobile_phone=" + phone);
+	user_gr.query();
+	var caller_sys_id = user_gr.next() ? user_gr.getValue('sys_id') : '';
+
 	
 	var calls_gr = new GlideRecord('incident');
-	calls_gr.addEncodedQuery('active=true');
+	calls_gr.addEncodedQuery('active=true^caller_id=' + caller_sys_id);
 	calls_gr.orderBy('number');
 	calls_gr.query();
 	
