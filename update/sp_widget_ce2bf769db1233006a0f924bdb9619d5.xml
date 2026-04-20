@@ -95,18 +95,24 @@
 
 	// lookup caller by hardcoded phone (for testing)
 	var phone = $sp.getParameter('phone') || '';
-		
-	var user_gr = new GlideRecord('sys_user');
-	user_gr.addActiveQuery();
-	user_gr.addEncodedQuery("phone=" + phone + "^ORhome_phone=" + phone + "^ORmobile_phone=" + phone);
-	user_gr.query();
-	var caller_sys_id = user_gr.next() ? user_gr.getValue('sys_id') : '';
+	var caller_sys_id = '';
 
 	
+	if (phone) {
+		var user_gr = new GlideRecord('sys_user');
+		user_gr.addActiveQuery();
+		user_gr.addEncodedQuery("phone=" + phone + "^ORhome_phone=" + phone + "^ORmobile_phone=" + phone);
+		user_gr.query();
+		caller_sys_id = user_gr.next() ? user_gr.getValue('sys_id') : '';
+	}
+	
 	var calls_gr = new GlideRecord('incident');
-	calls_gr.addEncodedQuery('active=true^caller_id=' + caller_sys_id);
-	calls_gr.orderBy('number');
-	calls_gr.query();
+	if (caller_sys_id) {
+		calls_gr.addEncodedQuery('active=true^caller_id=' + caller_sys_id);
+		calls_gr.orderBy('number');
+		calls_gr.query();
+	}
+	
 	
 	while(calls_gr.next())
 		{
