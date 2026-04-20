@@ -6,10 +6,29 @@
 	var c = this;
 	$scope.runtime_url = $sce.trustAsResourceUrl( c.data.runtime );
 	
-	glideUserSession.loadCurrentUser().then(function(currentUser) {
-		spUtil.recordWatch($scope, 'incident', "active=true^contact_type=twilio_flex^assigned_to="+currentUser.userID+"^NQactive=true^x_8725_servicenow_twilio_integration_informationLIKE"+currentUser.userID, function(name,data) {
-			spUtil.update($scope);
-		});
+	window.addEventListener('message', function(event) {
+		if (event.data && event.data.phoneNumber) {
+			$scope.$apply(function() {
+				$http({
+					method: 'POST',
+					url: '/api/x_8725_servicenow/twilio_flex/find_user_phone',
+					data: { phoneNumber: '+14068405011' }
+				}).then(function(response) {
+					var result = response.data.result;
+					if (result && result.tickets) {
+						c.data.calls = result.tickets.map(function(t, i) {
+							return {
+								sys_id: t.sys_id,
+								number: t.number,
+								caller: result.name,
+								url: '/incident.do?sys_id=' + t.sys_id,
+								added_class: i === 0 ? 'active' : ''
+							};
+						});
+					}
+				});
+			});
+		}
 	});
 }]]></client_script>
         <controller_as>c</controller_as>
