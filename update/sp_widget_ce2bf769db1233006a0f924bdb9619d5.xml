@@ -6,10 +6,12 @@
 	var c = this;
 	$scope.runtime_url = $sce.trustAsResourceUrl( c.data.runtime );
 	
-	window.addEventListener('message', function(event) {
+		window.addEventListener('message', function(event) {
 		if (event.data && event.data.phoneNumber) {
-			c.data.phone = event.data.phoneNumber;
-			spUtil.update($scope);
+			$scope.$apply(function() {
+				c.data.phone = event.data.phoneNumber;
+				spUtil.update($scope);
+			});
 		}
 	});
 }]]></client_script>
