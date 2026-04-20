@@ -13,7 +13,7 @@
 		
 		//read phone number in from Twilio request
 		var requestBody = request.body.data;
-		var phone = requestBody.phoneNumber;
+		var phone =  "+14068405011";
 		
 		//find any users that have aphone number that matches the phone number from Twilio
 		var user_gr = new GlideRecord('sys_user');
