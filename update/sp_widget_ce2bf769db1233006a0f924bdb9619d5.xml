@@ -10,8 +10,9 @@
 		if (event.data && event.data.phoneNumber) {
 			$scope.$apply(function() {
 				c.data.phone = event.data.phoneNumber;
-				spUtil.update($scope);
+				
 			});
+			spUtil.update($scope);
 		}
 	});
 }]]></client_script>
