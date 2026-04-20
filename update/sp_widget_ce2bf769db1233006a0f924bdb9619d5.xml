@@ -94,7 +94,7 @@
 	data.runtime = "https://interface-demo.blackpond-f670c875.eastus.azurecontainerapps.io/api/flex-token";
 	
 	var calls_gr = new GlideRecord('incident');
-	calls_gr.addEncodedQuery('active=true^contact_type=twilio_flex^assigned_toDYNAMIC90d1921e5f510100a9ad2572f2b477fe^x_8725_servicenow_twilio_integration_informationNOT LIKEcall_completed^NQactive=true^x_8725_servicenow_twilio_integration_informationLIKEjavascript:gs.getUserID()^x_8725_servicenow_twilio_integration_informationNOT LIKEcall_completed');
+	calls_gr.addEncodedQuery('active=true');
 	calls_gr.orderBy('number');
 	calls_gr.query();
 	
