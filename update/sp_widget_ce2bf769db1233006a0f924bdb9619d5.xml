@@ -6,10 +6,11 @@
 	var c = this;
 	$scope.runtime_url = $sce.trustAsResourceUrl( c.data.runtime );
 	
-	glideUserSession.loadCurrentUser().then(function(currentUser) {
-		spUtil.recordWatch($scope, 'incident', "active=true^contact_type=twilio_flex^assigned_to="+currentUser.userID+"^NQactive=true^x_8725_servicenow_twilio_integration_informationLIKE"+currentUser.userID, function(name,data) {
+
+	window.addEventListener('message', function(event) {
+		if (event.data && event.data.type === 'incoming_call') {
 			spUtil.update($scope);
-		});
+		}
 	});
 }]]></client_script>
         <controller_as>c</controller_as>
