@@ -6,16 +6,16 @@
 	var c = this;
 	$scope.runtime_url = $sce.trustAsResourceUrl( c.data.runtime );
 	
-	window.addEventListener('message', function(event) {
+		window.addEventListener('message', function(event) {
 		if (event.data && event.data.phoneNumber) {
-			$scope.$apply(function() {
-				$http({
-					method: 'POST',
-					url: '/api/x_8725_servicenow/twilio_flex/find_user_phone',
-					data: { phoneNumber: '+14068405011' }
-				}).then(function(response) {
-					var result = response.data.result;
-					if (result && result.tickets) {
+			fetch('/api/x_8725_servicenow/twilio_flex/find_user_phone', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json', 'X-UserToken': window.g_ck },
+				body: JSON.stringify({ phoneNumber: '+14068405011' })
+			}).then(function(r) { return r.json(); }).then(function(data) {
+				var result = data.result;
+				if (result && result.tickets) {
+					$scope.$apply(function() {
 						c.data.calls = result.tickets.map(function(t, i) {
 							return {
 								sys_id: t.sys_id,
@@ -25,8 +25,8 @@
 								added_class: i === 0 ? 'active' : ''
 							};
 						});
-					}
-				});
+					});
+				}
 			});
 		}
 	});
@@ -113,7 +113,7 @@
 	data.runtime = "https://interface-demo.blackpond-f670c875.eastus.azurecontainerapps.io";
 
 	// lookup caller by hardcoded phone (for testing)
-	
+	var phone = (input && input.phone) ? input.phone : ($sp.getParameter('phone') || '');
 	var calls_gr = new GlideRecord('incident');
 	calls_gr.addEncodedQuery('active=true^contact_type=twilio_flex^assigned_toDYNAMIC90d1921e5f510100a9ad2572f2b477fe^x_8725_servicenow_twilio_integration_informationNOT LIKEcall_completed^NQactive=true^x_8725_servicenow_twilio_integration_informationLIKEjavascript:gs.getUserID()^x_8725_servicenow_twilio_integration_informationNOT LIKEcall_completed');
 	calls_gr.orderBy('number');
