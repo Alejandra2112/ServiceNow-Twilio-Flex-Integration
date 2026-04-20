@@ -8,26 +8,8 @@
 	
 		window.addEventListener('message', function(event) {
 		if (event.data && event.data.phoneNumber) {
-			fetch('/api/x_8725_servicenow/twilio_flex/find_user_phone', {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json', 'X-UserToken': window.g_ck },
-				body: JSON.stringify({ phoneNumber: '+14068405011' })
-			}).then(function(r) { return r.json(); }).then(function(data) {
-				var result = data.result;
-				if (result && result.tickets) {
-					$scope.$apply(function() {
-						c.data.calls = result.tickets.map(function(t, i) {
-							return {
-								sys_id: t.sys_id,
-								number: t.number,
-								caller: result.name,
-								url: '/incident.do?sys_id=' + t.sys_id,
-								added_class: i === 0 ? 'active' : ''
-							};
-						});
-					});
-				}
-			});
+			c.data.phone = '+14068405011';
+			spUtil.update($scope);
 		}
 	});
 }]]></client_script>
