@@ -92,7 +92,7 @@
         <roles/>
         <script><![CDATA[(function() {
 	data.calls =[];
-	data.runtime = "https://interface-demo.blackpond-f670c875.eastus.azurecontainerapps.io/api/flex-token";
+	data.runtime = "https://interface-demo.blackpond-f670c875.eastus.azurecontainerapps.io";
 
 	// lookup caller by hardcoded phone (for testing)
 	var phone = $sp.getParameter('phone') || '';
