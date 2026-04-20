@@ -94,6 +94,7 @@
 	data.runtime = "https://interface-demo.blackpond-f670c875.eastus.azurecontainerapps.io/api/flex-token";
 
 	// lookup caller by hardcoded phone (for testing)
+	var requestBody = request.body.data;
 	var phone = requestBody.phoneNumber;
 		
 	var user_gr = new GlideRecord('sys_user');
