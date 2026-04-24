@@ -28,7 +28,7 @@
     border-bottom: .25rem solid #0A2D3D !important;
 }
 
-.navbar-inverse{
+.navbar-header{
     background-color: #0A2D3D !important;
 }
 nav{
