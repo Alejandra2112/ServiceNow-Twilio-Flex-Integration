@@ -3,7 +3,6 @@
         <active>true</active>
         <application display_value="System Properties">d546447bc0a8016900046469895b557a</application>
         <assessment/>
-        <content_page/>
         <device_type/>
         <filter/>
         <hint/>
@@ -18,6 +17,7 @@
         <override_menu_roles>false</override_menu_roles>
         <query>$system_properties_ui.do?sysparm_title=Twilio%20Flex&amp;sysparm_category=Twilio%20Flex</query>
         <report/>
+        <require_confirmation>false</require_confirmation>
         <roles/>
         <sys_class_name>sys_app_module</sys_class_name>
         <sys_created_by>admin</sys_created_by>

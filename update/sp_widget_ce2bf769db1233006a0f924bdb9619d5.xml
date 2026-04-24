@@ -18,7 +18,7 @@
 	});
 }]]></client_script>
         <controller_as>c</controller_as>
-        <css>.panel-primary > .panel-heading {
+        <css>.panel-primary &gt; .panel-heading {
     background-color: #0A2D3D !important;
     border-color: #0A2D3D !important;
 	padding: 15px;
