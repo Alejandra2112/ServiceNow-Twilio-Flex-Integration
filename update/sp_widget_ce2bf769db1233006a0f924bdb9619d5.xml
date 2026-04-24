@@ -24,9 +24,12 @@
 	padding: 15px;
 }
 
-.navbar-inverse {
+.vbf5ec2f2cb10120000f8d856634c9c0c .navbar {
+    border-bottom: .25rem solid #0A2D3D !important;
+}
+
+.navbar-inverse{
     background-color: #0A2D3D !important;
-    border-color: #0A2D3D !important;
 }
 .left-div {
     float: left;
