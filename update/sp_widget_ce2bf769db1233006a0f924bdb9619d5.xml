@@ -19,7 +19,7 @@
 }]]></client_script>
         <controller_as>c</controller_as>
         <css>.panel-primary > .panel-heading {
-    background-color: #0A2D3D !important;
+    background-color: red !important;
     border-color: #0A2D3D !important;
 	padding: 15px;
 }
