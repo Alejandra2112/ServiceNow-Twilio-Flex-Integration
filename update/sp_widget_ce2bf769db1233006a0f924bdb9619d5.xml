@@ -26,8 +26,11 @@
 
 .vbf5ec2f2cb10120000f8d856634c9c0c .navbar {
     border-bottom: .25rem solid #0A2D3D !important;
+	background-color: #0A2D3D !important;
 }
-
+.vbf5ec2f2cb10120000f8d856634c9c0c .responsive-tablet .navbar-header{
+   background-color: #0A2D3D !important;
+}
 .navbar-header{
     background-color: #0A2D3D !important;
 }
