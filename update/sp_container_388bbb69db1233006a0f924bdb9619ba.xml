@@ -8,6 +8,7 @@
         <container_class_name/>
         <name>Twilio Flex Workspace - Container 1</name>
         <order>1</order>
+        <semantic_tag/>
         <sp_page display_value="twilio_flex_workspace">bc8bbb69db1233006a0f924bdb9619b7</sp_page>
         <subheader>false</subheader>
         <sys_class_name>sp_container</sys_class_name>
