@@ -19,10 +19,14 @@
 }]]></client_script>
         <controller_as>c</controller_as>
         <css>.panel-primary > .panel-heading {
-    background-color: #305151 !important;
-    border-color: #305151 !important;
-	padding: 15px;
-}		
+    background-color: #0A2D3D !important;
+    border-color: #0A2D3D !important;
+}
+
+.navbar-inverse {
+    background-color: #0A2D3D !important;
+    border-color: #0A2D3D !important;
+}
 .left-div {
     float: left;
    width:375px; 
