@@ -3,7 +3,6 @@
         <active>true</active>
         <application display_value="Service Desk">4fe67f8fc0a80164000a00fde5904c3e</application>
         <assessment/>
-        <content_page/>
         <device_type/>
         <filter/>
         <hint/>
@@ -18,6 +17,7 @@
         <override_menu_roles>false</override_menu_roles>
         <query>cab/?id=twilio_flex_workspace</query>
         <report/>
+        <require_confirmation>false</require_confirmation>
         <roles/>
         <sys_class_name>sys_app_module</sys_class_name>
         <sys_created_by>admin</sys_created_by>
