@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sp_page">
     <sp_page action="INSERT_OR_UPDATE">
         <category>custom</category>
-        <css/>
+        <css>.navbar-inverse { background-color: #0A2D3D !important; border-color: #0A2D3D !important; }
         <draft>false</draft>
         <dynamic_title_structure/>
         <id>twilio_flex_workspace</id>
