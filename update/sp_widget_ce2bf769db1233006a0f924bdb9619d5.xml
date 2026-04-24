@@ -21,6 +21,7 @@
         <css>.panel-primary > .panel-heading {
     background-color: #305151 !important;
     border-color: #305151 !important;
+	padding: 15px;
 }		
 .left-div {
     float: left;
