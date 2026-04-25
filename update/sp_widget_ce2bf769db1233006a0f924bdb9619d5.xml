@@ -9,6 +9,7 @@
 		if (!event.data) return;
 		if (event.data.type === 'incoming_call') {
 			c.data.triggered = true;
+			c.data.phone = event.data.phoneNumber || '';
 			spUtil.update($scope);
 		} else if (event.data.type === 'end_call') {
 			$scope.$apply(function() {
@@ -107,7 +108,7 @@
 	data.runtime = "https://interface-demo.blackpond-f670c875.eastus.azurecontainerapps.io/api/flex-token";
 
 	if (input && input.triggered) {
-		var phone = "+14068405011";
+		var phone = input.phone || '';
 		var user_gr = new GlideRecord('sys_user');
 		user_gr.addActiveQuery();
 		user_gr.addEncodedQuery("phone=" + phone + "^ORhome_phone=" + phone + "^ORmobile_phone=" + phone);
