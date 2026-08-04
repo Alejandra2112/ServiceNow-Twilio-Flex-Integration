@@ -18,3 +18,44 @@ If you find yourself unable to import your repository due to the presence of fil
   4. Run `git add -A`
   5. Run `git commit`
   6. Run `git push`
+
+---
+
+# Rama feature/softphone-workspace
+
+Esta rama contiene solo los archivos necesarios para la interfaz que reemplaza el softphone de Twilio Flex por una app externa: a la izquierda se carga el softphone (iframe apuntando a la URL de la app externa) y a la derecha aparecen los tickets del usuario que llama, obtenidos vía `postMessage` entre la app externa y el widget.
+
+**Nota:** esta rama es solo de referencia/empaquetado. No se sincroniza con la instancia (el checksum ya no coincide tras quitar archivos) — los cambios reales siguen viviendo en la rama `sn_instances/dev342553`.
+
+## La página (arma la URL que se abre)
+- `update/sp_page_bc8bbb69db1233006a0f924bdb9619b7.xml` — la página en sí (`id: twilio_flex_workspace`).
+- `update/sp_container_388bbb69db1233006a0f924bdb9619ba.xml` — el contenedor principal de la página.
+- `update/sp_row_318bf7e9db1233006a0f924bdb96194f.xml` — una fila dentro del contenedor.
+- `update/sp_column_318bf7e9db1233006a0f924bdb961951.xml` — una columna dentro de la fila.
+- `update/sp_instance_409bbb69db1233006a0f924bdb9619f9.xml` — la instalación del widget dentro de esa columna (dice "aquí va el widget `ce2bf769`").
+
+Cadena: Página > Contenedor > Fila > Columna > Widget. Cada nivel es un registro separado porque cualquier página de Service Portal se puede armar así con varios widgets en distintas columnas/filas.
+
+## El widget (el código real)
+- `update/sp_widget_ce2bf769db1233006a0f924bdb9619d5.xml`:
+  - `template`: iframe izquierdo (`#flex_iframe`, apunta a la app externa) y a la derecha el panel de pestañas con los tickets encontrados.
+  - `client_script`: escucha el `postMessage` de la app externa (`incoming_call`, `end_call`) y actualiza la pantalla.
+  - `script` (servidor): hace el `GlideRecord` que busca el usuario/incidentes por teléfono.
+  - `link`: función vacía — es donde iría un `postMessage` de salida hacia la app externa si se necesita.
+
+## El acceso al menú
+- `update/sys_app_module_e2ab7be9db1233006a0f924bdb961976.xml` — ítem de menú "Twilio Flex Workspace" (bajo Service Desk) que abre `cab/?id=twilio_flex_workspace`.
+
+## Los permisos (para que el widget lea/toque datos fuera de su scope)
+- `update/sys_scope_privilege_0c9bf7e9db1233006a0f924bdb9619c1.xml` — leer `incident`. **En uso.**
+- `update/sys_scope_privilege_2e03ac02db3233003380eb41ca961982.xml` — leer `sys_user`. **En uso.**
+- `update/sys_scope_privilege_7165e6aedb3e33003380eb41ca961984.xml` — crear en `incident`. Sin uso confirmado en esta rama, se deja por precaución.
+- `update/sys_scope_privilege_afddf1c6dbf233003380eb41ca9619c0.xml` — escribir/modificar `incident`. Sin uso confirmado, se deja por precaución.
+- `update/sys_scope_privilege_482ba222db7e33003380eb41ca961948.xml` — ejecutar `GlideRecord.setWorkflow`. Sin uso confirmado, se deja por precaución.
+- `update/sys_scope_privilege_489bf7e9db1233006a0f924bdb9619bf.xml` — leer propiedades del sistema (`gs.getProperty`). Sin uso confirmado, se deja por precaución.
+- `update/sys_scope_privilege_e83bec8fdbfa73003380eb41ca9619d6.xml` — usar `ScopedGlideElement`. Sin uso confirmado, se deja por precaución.
+
+## Lo que se quitó de la rama original y por qué
+- El API REST "Twilio Flex" (`sys_ws_definition` + 3 `sys_ws_operation`) y los 7 `sys_scope_privilege` que solo esas operaciones usaban (`RESTAPIRequest`, `RESTAPIRequestBody`, `ScriptableServiceResultBuilder.*`, `GlideRecord.insert`, `GlideRecord.update`): pertenecen al flujo clásico donde era Twilio quien llamaba al API de ServiceNow, no al flujo actual basado en `postMessage`.
+- El campo custom `x_8725_servicenow_twilio_integration_information` en Incident y el choice `contact_type = "twilio_flex"` (`sys_dictionary`, `sys_documentation`, `dictionary/incident.xml`, `sys_choice_task_contact_type`): solo los usaban esas mismas operaciones REST para etiquetar tickets (`twilio_assigned_to`, `call_completed`).
+- El dashboard de Performance Analytics "PA Usage by Web API" (`pa_dashboards_permissions_*`, `sys_grid_canvas_*`) y otros restos (`sys_metadata_link_*`, `sys_properties_*`, `sys_app_module` de configuración, `sys_app_10e83fe1...`, `checksum.txt`): boilerplate generado por la plataforma o configuración/legacy sin relación con esta interfaz.
