@@ -2,20 +2,14 @@
     <sp_widget action="INSERT_OR_UPDATE">
         <category>custom</category>
         <client_script><![CDATA[function($scope,spUtil,glideUserSession,$sce) {
+	/* widget controller */
 	var c = this;
 	$scope.runtime_url = $sce.trustAsResourceUrl( c.data.runtime );
-
-	window.addEventListener('message', function(event) {
-		if (!event.data) return;
-		if (event.data.type === 'incoming_call') {
-			c.data.triggered = true;
-			c.data.phone = event.data.phoneNumber || '';
+	
+	glideUserSession.loadCurrentUser().then(function(currentUser) {
+		spUtil.recordWatch($scope, 'incident', "active=true^contact_type=twilio_flex^assigned_to="+currentUser.userID+"^NQactive=true^x_8725_servicenow_twilio_integration_informationLIKE"+currentUser.userID, function(name,data) {
 			spUtil.update($scope);
-		} else if (event.data.type === 'end_call') {
-			$scope.$apply(function() {
-				c.data.calls = [];
-			});
-		}
+		});
 	});
 }]]></client_script>
         <controller_as>c</controller_as>
@@ -97,25 +91,16 @@
         <roles/>
         <script><![CDATA[(function() {
 	data.calls =[];
-	data.runtime = "https://interface-demo.blackpond-f670c875.eastus.azurecontainerapps.io/api/flex-token";
-
-	if (input && input.triggered) {
-		var phone = input.phone || '';
-		var user_gr = new GlideRecord('sys_user');
-		user_gr.addActiveQuery();
-		user_gr.addEncodedQuery("phone=" + phone + "^ORhome_phone=" + phone + "^ORmobile_phone=" + phone);
-		user_gr.query();
-		var caller_sys_id = user_gr.next() ? user_gr.getValue('sys_id') : '';
-
-		var calls_gr = new GlideRecord('incident');
-		if (caller_sys_id) {
-			calls_gr.addEncodedQuery('active=true^caller_id=' + caller_sys_id);
-			calls_gr.orderBy('number');
-			calls_gr.query();
-		}
+	data.runtime = "https://flex.twilio.com/"+gs.getProperty('twilio.flex.runtime');
 	
-	while(calls_gr && calls_gr.next())
+	var calls_gr = new GlideRecord('incident');
+	calls_gr.addEncodedQuery('active=true^contact_type=twilio_flex^assigned_toDYNAMIC90d1921e5f510100a9ad2572f2b477fe^x_8725_servicenow_twilio_integration_informationNOT LIKEcall_completed^NQactive=true^x_8725_servicenow_twilio_integration_informationLIKEjavascript:gs.getUserID()^x_8725_servicenow_twilio_integration_informationNOT LIKEcall_completed');
+	calls_gr.orderBy('number');
+	calls_gr.query();
+	
+	while(calls_gr.next())
 		{
+		
 		var call ={};
 			call.sys_id = calls_gr.getValue('sys_id');
 			call.number = calls_gr.getValue('number');
@@ -128,7 +113,6 @@
 			}
 			data.calls.push(call);
 		}
-	}
 		
 		
 	})();]]></script>
