@@ -10,10 +10,14 @@
 		if (event.data.type === 'incoming_call') {
 			c.data.triggered = true;
 			c.data.phone = event.data.phoneNumber || '';
-			spUtil.update($scope);
+			c.data.loadingTickets = true;
+			spUtil.update($scope).then(function() {
+				c.data.loadingTickets = false;
+			});
 		} else if (event.data.type === 'end_call') {
 			$scope.$apply(function() {
 				c.data.calls = [];
+				c.data.loadingTickets = false;
 			});
 		}
 	});
@@ -81,6 +85,17 @@
 
 .tab-pane{
   height:85vh;
+}
+
+.ticket-loading{
+  padding: 40px 20px;
+  text-align: center;
+  color: #666;
+  font-size: 14px;
+}
+
+.ticket-loading .fa-spinner{
+  margin-right: 8px;
 }</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
@@ -160,12 +175,15 @@
                     </span>
                 </div>
                 <div class="panel-body">
-                    <div class="tab-content">
+                    <div ng-if="c.data.loadingTickets" class="ticket-loading">
+                        <i class="fa fa-spinner fa-spin"></i> Cargando...
+                    </div>
+                    <div class="tab-content" ng-if="!c.data.loadingTickets">
                         <div ng-repeat="call_frame in c.data.calls track by call_frame.sys_id" class="tab-pane {{call_frame.added_class}}" id="tab_{{call_frame.sys_id}}">
                        	  <iframe id="call_{{call_frame.sys_id}}_iframe"  width="100%" height="100%" frameborder="0" ng-src="{{call_frame.url}}"></iframe>
                       </div>
                 </div>
-            </div>  
+            </div>
 </div>
   <script>
     function testFunction(el)
