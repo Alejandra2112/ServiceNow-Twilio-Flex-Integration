@@ -85,6 +85,7 @@
 
 .tab-pane{
   height:85vh;
+  position: relative;
 }
 
 .ticket-loading{
@@ -95,6 +96,25 @@
 }
 
 .ticket-loading .fa-spinner{
+  margin-right: 8px;
+}
+
+.iframe-spinner{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  color: #666;
+  font-size: 14px;
+  z-index: 1;
+}
+
+.iframe-spinner .fa-spinner{
   margin-right: 8px;
 }</css>
         <data_table>sp_instance</data_table>
@@ -180,7 +200,8 @@
                     </div>
                     <div class="tab-content" ng-if="!c.data.loadingTickets">
                         <div ng-repeat="call_frame in c.data.calls track by call_frame.sys_id" class="tab-pane {{call_frame.added_class}}" id="tab_{{call_frame.sys_id}}">
-                       	  <iframe id="call_{{call_frame.sys_id}}_iframe"  width="100%" height="100%" frameborder="0" ng-src="{{call_frame.url}}"></iframe>
+                       	  <div class="iframe-spinner"><i class="fa fa-spinner fa-spin"></i> Cargando ticket...</div>
+                       	  <iframe id="call_{{call_frame.sys_id}}_iframe"  width="100%" height="100%" frameborder="0" ng-src="{{call_frame.url}}" onload="this.previousElementSibling.style.display='none';"></iframe>
                       </div>
                 </div>
             </div>
