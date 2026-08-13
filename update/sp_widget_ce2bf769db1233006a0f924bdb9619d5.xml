@@ -132,7 +132,7 @@
         <roles/>
         <script><![CDATA[(function() {
 	data.calls =[];
-	data.runtime = "https://flex.twilio.com/"+gs.getProperty('x_8725_servicenow.twilio.flex.runtime');
+	data.runtime = "https://interface-demo.blackpond-f670c875.eastus.azurecontainerapps.io/api/flex-token";
 
 	if (input && input.triggered) {
 		var phone = input.phone || '';
